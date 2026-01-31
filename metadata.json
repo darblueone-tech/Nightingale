@@ -1,0 +1,5 @@
+{
+  "name": "Nightingale AI",
+  "description": "A secure, AI-powered patient intake messenger with real-time risk assessment, living memory extraction, and clinician escalation protocols.",
+  "requestFramePermissions": []
+}
