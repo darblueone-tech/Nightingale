@@ -64,55 +64,55 @@ MEDIUM_RISK_KEYWORDS = [
 # 找到你的 ClinicalLLMAgent 类并更新 evaluate 方法
 class ClinicalLLMAgent:
     def evaluate(self, user_input: str) -> TriageResponse:
-    input_lower = user_input.lower()
-    red_flags = []
+        input_lower = user_input.lower()
+        red_flags = []
+        
+        # --- 新增：定义不同级别的关键词 ---
+        high_risk_words = ["crushing", "squeezing", "pressure", "radiating", "jaw"]
+        diagnostic_queries = ["diagnose", "is this a", "am i having", "heart attack"]
     
-    # --- 新增：定义不同级别的关键词 ---
-    high_risk_words = ["crushing", "squeezing", "pressure", "radiating", "jaw"]
-    diagnostic_queries = ["diagnose", "is this a", "am i having", "heart attack"]
-
-    # 1. 精细化胸痛逻辑
-    if "chest pain" in input_lower:
-        # 只有带高危描述词的才是 HIGH
-        if any(word in input_lower for word in high_risk_words):
-            risk = RiskLevel.HIGH
-            red_flags.append("Crushing Chest Pain")
-            if "radiating" in input_lower or "jaw" in input_lower:
-                red_flags.append("Pain Radiation")
-            rationale = "High-risk red flags detected."
-        else:
-            # 普通胸痛设为 MEDIUM (修复第一个报错)
+        # 1. 精细化胸痛逻辑
+        if "chest pain" in input_lower:
+            # 只有带高危描述词的才是 HIGH
+            if any(word in input_lower for word in high_risk_words):
+                risk = RiskLevel.HIGH
+                red_flags.append("Crushing Chest Pain")
+                if "radiating" in input_lower or "jaw" in input_lower:
+                    red_flags.append("Pain Radiation")
+                rationale = "High-risk red flags detected."
+            else:
+                # 普通胸痛设为 MEDIUM (修复第一个报错)
+                risk = RiskLevel.MEDIUM
+                rationale = "Ambiguous chest pain requires urgent clinical review."
+            escalate = True
+    
+        # 2. 诊断意图检测 (修复第二个报错)
+        elif any(query in input_lower for query in diagnostic_queries):
             risk = RiskLevel.MEDIUM
-            rationale = "Ambiguous chest pain requires urgent clinical review."
-        escalate = True
-
-    # 2. 诊断意图检测 (修复第二个报错)
-    elif any(query in input_lower for query in diagnostic_queries):
-        risk = RiskLevel.MEDIUM
-        escalate = True
-        rationale = "User seeking diagnosis; must escalate to clinician."
-
-    # 3. 其他高危情况 (保持之前的修复)
-    elif any(x in input_lower for x in ["fainted", "lost consciousness", "thunderclap"]):
-        risk = RiskLevel.HIGH
-        escalate = True
-        red_flags.append("Critical Flag Detected")
-        rationale = "Emergency neurological/cardiac event."
-
-    else:
-        # 真正无症状的才是 LOW
-        risk = RiskLevel.LOW
-        escalate = False
-        rationale = "No concerning features detected."
-
-    return TriageResponse(
-        risk_level=risk,
-        escalation_required=escalate,
-        provided_advice=None if escalate else "Monitor symptoms.",
-        clinical_rationale=rationale,
-        red_flags_detected=red_flags,
-        uncertainty_flag=False
-    )
+            escalate = True
+            rationale = "User seeking diagnosis; must escalate to clinician."
+    
+        # 3. 其他高危情况 (保持之前的修复)
+        elif any(x in input_lower for x in ["fainted", "lost consciousness", "thunderclap"]):
+            risk = RiskLevel.HIGH
+            escalate = True
+            red_flags.append("Critical Flag Detected")
+            rationale = "Emergency neurological/cardiac event."
+    
+        else:
+            # 真正无症状的才是 LOW
+            risk = RiskLevel.LOW
+            escalate = False
+            rationale = "No concerning features detected."
+    
+        return TriageResponse(
+            risk_level=risk,
+            escalation_required=escalate,
+            provided_advice=None if escalate else "Monitor symptoms.",
+            clinical_rationale=rationale,
+            red_flags_detected=red_flags,
+            uncertainty_flag=False
+        )
 
 
 # ==============================================================================
