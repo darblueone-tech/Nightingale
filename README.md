@@ -28,7 +28,7 @@ Follow these steps to run the application locally.
 
 1.  **Clone the repository and install dependencies:**
     ```bash
-    git clone [your-repo-link]
+    git clone https://github.com/darblueone-tech/Nightingale
     cd Nightingale
     npm install
     ```
