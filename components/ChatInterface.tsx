@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Message, MessageSource, RiskLevel } from '../types';
-import { Send, ShieldAlert, User, Stethoscope, Lock, Quote } from 'lucide-react';
+import { Send, ShieldAlert, User, Stethoscope, Lock, Quote, FileSearch } from 'lucide-react';
 
 interface Props {
   messages: Message[];
@@ -94,13 +94,16 @@ export const ChatInterface: React.FC<Props> = ({
               {/* Message Text */}
               <p className="whitespace-pre-wrap leading-relaxed">{msg.text}</p>
               
-              {/* Citations */}
+              {/* Grounding / Citations */}
               {msg.citations && msg.citations.length > 0 && (
-                <div className="mt-2 flex flex-col gap-1.5 border-t border-black/5 pt-2">
+                <div className="mt-3 flex flex-col gap-1 border-t border-black/10 pt-2">
+                    <div className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider opacity-60 mb-0.5">
+                       <FileSearch size={10} /> Protocol Match
+                    </div>
                     {msg.citations.map((citation, idx) => (
-                        <div key={idx} className="flex items-start gap-1.5 text-[10px] text-slate-500 bg-white/50 p-1.5 rounded border border-black/5">
-                            <Quote size={10} className="mt-0.5 shrink-0 opacity-50" />
-                            <span className="italic font-medium opacity-80">"{citation}"</span>
+                        <div key={idx} className="flex items-start gap-2 text-[11px] text-slate-600 bg-white/60 p-2 rounded-md border border-black/5 hover:bg-white/80 transition-colors">
+                            <Quote size={10} className="mt-0.5 shrink-0 opacity-40" />
+                            <span className="font-medium italic text-slate-700">"{citation}"</span>
                         </div>
                     ))}
                 </div>
