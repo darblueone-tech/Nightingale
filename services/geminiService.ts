@@ -26,6 +26,11 @@ const responseSchema: Schema = {
       type: Type.STRING,
       description: "Specific justification citing the V2.0 protocol criteria (e.g., 'Red Flag: Resting Dyspnea' or 'Vulnerable Population: Elderly Fall').",
     },
+    citations: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description: "A list of exact text spans from the Clinical Risk Gating Protocol V2.0 that justify the risk level.",
+    },
     profileUpdates: {
       type: Type.OBJECT,
       description: "Updates to the patient's living memory based on the conversation.",
@@ -62,7 +67,7 @@ const responseSchema: Schema = {
       },
     },
   },
-  required: ["reply", "riskLevel", "riskReason", "profileUpdates"],
+  required: ["reply", "riskLevel", "riskReason", "citations", "profileUpdates"],
 };
 
 const SYSTEM_INSTRUCTION = `
@@ -109,12 +114,14 @@ OPERATIONAL RULES:
    - If LOW: Provide general advice or continue intake.
 4. DATA EXTRACTION: Always extract medications, allergies, and symptoms (Living Memory), even during escalation.
 5. PRIVACY: Do not repeat names or IDs if they appear in the text.
+6. GROUNDING: You MUST provide 'citations'. These must be exact substrings from the Protocol text above that matched the user's input.
 `;
 
 export interface AIResponse {
   reply: string;
   riskLevel: RiskLevel;
   riskReason: string;
+  citations: string[];
   profileUpdates: {
     chiefComplaint?: string;
     medications?: { name: string; status: 'ACTIVE' | 'STOPPED' }[];
@@ -167,6 +174,7 @@ export const sendMessageToAI = async (
       reply: parsed.reply,
       riskLevel: parsed.riskLevel as RiskLevel,
       riskReason: parsed.riskReason,
+      citations: parsed.citations || [],
       profileUpdates: parsed.profileUpdates
     };
 
@@ -177,6 +185,7 @@ export const sendMessageToAI = async (
       reply: "I'm having trouble connecting to the medical engine. Please proceed to the clinic desk.",
       riskLevel: RiskLevel.MEDIUM,
       riskReason: "System Error",
+      citations: [],
       profileUpdates: {}
     };
   }
