@@ -1,0 +1,14 @@
+PROJECT: Nightingale - Resilient Clinical AI Agent
+DATE: February 2026
+
+EXTERNAL LIBRARIES & MODELS:
+1. Google Gemini 1.5 Pro: Primary LLM for clinical reasoning and RAG.
+2. Pytest (MIT License): Automated testing framework.
+3. Pydantic (MIT License): Data validation and settings management.
+4. Next.js / Node.js (MIT License): Full-stack web application framework.
+5. Microsoft Presidio (Simulated): PII detection and anonymization logic.
+
+REGULATORY GUIDELINES REFERENCED:
+- Emergency Severity Index (ESI) Implementation Handbook.
+- PDPA (Singapore Personal Data Protection Act) - Data Anonymization Guidelines.
+- FDA Software as a Medical Device (SaMD) Quality Management.
