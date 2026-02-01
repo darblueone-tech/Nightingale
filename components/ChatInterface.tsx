@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Message, MessageSource, RiskLevel } from '../types';
-import { Send, ShieldAlert, User, Stethoscope, Lock } from 'lucide-react';
+import { Send, ShieldAlert, User, Stethoscope, Lock, Quote } from 'lucide-react';
 
 interface Props {
   messages: Message[];
@@ -93,6 +93,18 @@ export const ChatInterface: React.FC<Props> = ({
 
               {/* Message Text */}
               <p className="whitespace-pre-wrap leading-relaxed">{msg.text}</p>
+              
+              {/* Citations */}
+              {msg.citations && msg.citations.length > 0 && (
+                <div className="mt-2 flex flex-col gap-1.5 border-t border-black/5 pt-2">
+                    {msg.citations.map((citation, idx) => (
+                        <div key={idx} className="flex items-start gap-1.5 text-[10px] text-slate-500 bg-white/50 p-1.5 rounded border border-black/5">
+                            <Quote size={10} className="mt-0.5 shrink-0 opacity-50" />
+                            <span className="italic font-medium opacity-80">"{citation}"</span>
+                        </div>
+                    ))}
+                </div>
+              )}
 
               {/* Risk/Meta Footer for AI Messages */}
               {msg.source === MessageSource.AI && msg.riskLevel && (
