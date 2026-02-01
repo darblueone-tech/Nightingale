@@ -65,7 +65,8 @@ export default function App() {
         source: MessageSource.AI,
         timestamp: Date.now(),
         riskLevel: aiResult.riskLevel,
-        riskReason: aiResult.riskReason
+        riskReason: aiResult.riskReason,
+        citations: aiResult.citations
       };
 
       setMessages(prev => [...prev, aiMsg]);
