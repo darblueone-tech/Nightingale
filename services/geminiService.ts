@@ -29,7 +29,7 @@ const responseSchema: Schema = {
     citations: {
       type: Type.ARRAY,
       items: { type: Type.STRING },
-      description: "A list of exact text spans from the Clinical Risk Gating Protocol V2.0 that justify the risk level.",
+      description: "A list of exact text spans from the Clinical Risk Gating Protocol V2.0 that justify the risk level. MUST contain at least one citation.",
     },
     profileUpdates: {
       type: Type.OBJECT,
