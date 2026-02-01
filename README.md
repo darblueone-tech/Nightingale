@@ -72,9 +72,10 @@ You should see 13 passing tests covering the following modules:
 ✅ test_memory_mutation.py: Verifies stateful medication updates.
 
 ✅ test_grounding.py: Verifies RAG citations and span indices.
+[Converted_d0d50d38-b818-47dd-88df-faa4623880ae.md](https://github.com/user-attachments/files/24988986/Converted_d0d50d38-b818-47dd-88df-faa4623880ae.md)
 
-## 🛡️ Security & Compliance Logic
-**1. Where Redaction Happens**
+🛡️ Security & Compliance Logic
+1. Where Redaction Happens
 Redaction is implemented at the Ingress Layer (Pre-processing), strictly before data is sent to the LLM or stored in logs.
 
 Mechanism: We utilize a deterministic engine combining Regular Expressions and Named Entity Recognition (NER).
@@ -87,7 +88,7 @@ Names: Entity extraction replaces identifiers with [REDACTED_NAME].
 
 Verification: See src/test_redaction.py. The system asserts that raw PII never appears in the output payload or system logs to prevent data leakage.
 
-**2. How We Enforce RBAC (Role-Based Access Control)**
+2. How We Enforce RBAC (Role-Based Access Control)
 Access control is enforced at the Data Access Layer using a strict "Least Privilege" model. The system distinguishes between authentication (Identity) and authorization (Permission).
 
 Logic:
