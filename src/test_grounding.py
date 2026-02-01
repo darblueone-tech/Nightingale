@@ -27,8 +27,8 @@ class MedicalRAGAgent:
             "doc_001": "Paracetamol is indicated for the relief of mild to moderate pain."
         }
 
+    # 找到你的 MedicalRAGAgent 类中的回答逻辑
     def answer_question(self, question: str) -> GroundedResponse:
-        # 实际开发中，这里会调用 LLM + 检索工具（如 LlamaIndex 或 Instructor）
         if "paracetamol" in question.lower():
             return GroundedResponse(
                 answer="Paracetamol is used for treating moderate pain [1].",
@@ -36,8 +36,10 @@ class MedicalRAGAgent:
                     Citation(
                         source_id="doc_001",
                         quote="relief of mild to moderate pain",
-                        start_idx=35,
-                        end_idx=64
+                        # 修复：将 35 改为 33
+                        start_idx=33, 
+                        # 确保结束索引也相应调整 (原 64 应该是对的，或者改为 33 + len(quote))
+                        end_idx=33 + len("relief of mild to moderate pain") 
                     )
                 ]
             )
